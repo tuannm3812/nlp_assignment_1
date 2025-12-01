@@ -1,7 +1,30 @@
-loguru
-pip
-python-dotenv
-ruff
+# Core data & ML
+pandas
+numpy
+scikit-learn
+gensim
+
+# Visualization
+matplotlib
+seaborn
+wordcloud
+networkx
+
+# NLP
+nltk
+
+# PDF / OCR
+pdfplumber
+pytesseract
+pdf2image
+Pillow
+
+# Utilities
 tqdm
+loguru
+python-dotenv
 typer
+ruff
+
+# If this repository should be installed editable, keep the following
 -e .
