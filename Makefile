@@ -21,11 +21,11 @@ requirements:
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
-	find . -type d -name "*.egg-info" -exec rm -rf {} +
-	find . -type d -name ".pytest_cache" -exec rm -rf {} +
-	find . -type d -name ".ruff_cache" -exec rm -rf {} +
-	find . -type d -name ".mypy_cache" -exec rm -rf {} +
-	rm -rf build/ dist/
+	find . -type d -name "*.egg-info" -exec rm -rf {} + 2>/dev/null || true
+	find . -type d -name ".pytest_cache" -exec rm -rf {} + 2>/dev/null || true
+	find . -type d -name ".ruff_cache" -exec rm -rf {} + 2>/dev/null || true
+	find . -type d -name ".mypy_cache" -exec rm -rf {} + 2>/dev/null || true
+	rm -rf build/ dist/ .eggs/ 2>/dev/null || true
 
 ## Lint using ruff (use `make format` to do formatting)
 .PHONY: lint
@@ -38,10 +38,15 @@ format:
 	ruff check --fix .
 	ruff format .
 
-## Run tests
+## Run tests with pytest
 .PHONY: test
 test:
 	pytest tests/ -v --cov=src
+
+## Type check with mypy
+.PHONY: typecheck
+typecheck:
+	mypy src/ --strict
 
 #################################################################################
 # PROJECT RULES                                                                 #
