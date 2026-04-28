@@ -3,30 +3,58 @@ requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "nlp_assignment_1"
-version = "0.0.1"
-description = "A short description of the project."
+name = "gender-equality-nlp"
+version = "1.0.0"
+description = "NLP analysis of parliamentary discourse on workplace gender equality amendment."
 authors = [
-  { name = "ManhTuan_Nguyen" },
+  { name = "Manh Tuan Nguyen", email = "tuannm3812@gmail.com" },
 ]
 
 readme = "README.md"
+license = { text = "MIT" }
 classifiers = [
     "Programming Language :: Python :: 3",
-    
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Intended Audience :: Science/Research",
 ]
 requires-python = "~=3.11.0"
+dependencies = [
+    "pandas>=2.0",
+    "numpy>=1.23",
+    "scikit-learn>=1.2",
+    "gensim>=4.0",
+    "matplotlib>=3.6",
+    "seaborn>=0.12",
+    "wordcloud>=1.8",
+    "networkx>=3.0",
+    "nltk>=3.8",
+    "pdfplumber>=0.9",
+    "pytesseract>=0.3",
+    "pdf2image>=1.16",
+    "Pillow>=9.0",
+    "tqdm>=4.60",
+    "loguru>=0.6",
+    "python-dotenv>=0.20",
+    "typer>=0.9",
+    "ruff>=0.1",
+]
 
+[project.urls]
+Homepage = "https://github.com/tuannm3812/gender-equality-nlp-analysis"
+Repository = "https://github.com/tuannm3812/gender-equality-nlp-analysis"
+"Bug Tracker" = "https://github.com/tuannm3812/gender-equality-nlp-analysis/issues"
 
 [tool.ruff]
 line-length = 99
-src = ["nlp_assignment_1"]
-include = ["pyproject.toml", "nlp_assignment_1/**/*.py"]
+src = ["src"]
+include = ["pyproject.toml", "src/**/*.py"]
+target-version = "py311"
 
 [tool.ruff.lint]
-extend-select = ["I"]  # Add import sorting
+extend-select = ["I", "E", "F", "W"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["nlp_assignment_1"]
+known-first-party = ["gender_equality_nlp"]
 force-sort-within-sections = true
-
