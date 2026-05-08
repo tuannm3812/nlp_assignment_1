@@ -14,18 +14,12 @@ PYTHON_INTERPRETER = python
 .PHONY: requirements
 requirements:
 	$(PYTHON_INTERPRETER) -m pip install -U pip
-	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
+	$(PYTHON_INTERPRETER) -m pip install -e ".[dev]"
 
 ## Delete all compiled Python files and cache
 .PHONY: clean
 clean:
-	find . -type f -name "*.py[co]" -delete
-	find . -type d -name "__pycache__" -delete
-	find . -type d -name "*.egg-info" -exec rm -rf {} + 2>/dev/null || true
-	find . -type d -name ".pytest_cache" -exec rm -rf {} + 2>/dev/null || true
-	find . -type d -name ".ruff_cache" -exec rm -rf {} + 2>/dev/null || true
-	find . -type d -name ".mypy_cache" -exec rm -rf {} + 2>/dev/null || true
-	rm -rf build/ dist/ .eggs/ 2>/dev/null || true
+	$(PYTHON_INTERPRETER) -c "from pathlib import Path; import shutil; [p.unlink() for p in Path('.').rglob('*.py[co]')]; [shutil.rmtree(p, ignore_errors=True) for p in Path('.').rglob('__pycache__')]; [shutil.rmtree(p, ignore_errors=True) for p in ['build', 'dist', '.eggs', '.pytest_cache', '.ruff_cache', '.mypy_cache'] if Path(p).exists()]"
 
 ## Lint using ruff (use `make format` to do formatting)
 .PHONY: lint
@@ -41,12 +35,12 @@ format:
 ## Run tests with pytest
 .PHONY: test
 test:
-	pytest tests/ -v --cov=src
+	pytest -v --cov=gender_equality_nlp
 
 ## Type check with mypy
 .PHONY: typecheck
 typecheck:
-	mypy src/ --strict
+	mypy gender_equality_nlp --strict
 
 #################################################################################
 # PROJECT RULES                                                                 #
@@ -55,7 +49,7 @@ typecheck:
 ## Make dataset
 .PHONY: data
 data: requirements
-	$(PYTHON_INTERPRETER) src/dataset.py
+	$(PYTHON_INTERPRETER) -m gender_equality_nlp.dataset
 
 #################################################################################
 # Self Documenting Commands                                                     #

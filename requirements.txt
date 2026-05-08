@@ -28,8 +28,8 @@ typer>=0.9
 # Development
 ruff>=0.1
 pytest>=7.0
+pytest-cov>=4.0
 mypy>=1.0
 black>=23.0
 
-# If this repository should be installed editable, keep the following
 -e .

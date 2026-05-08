@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 [project]
 name = "gender-equality-nlp"
 version = "1.0.0"
-description = "NLP analysis of parliamentary discourse on workplace gender equality amendment."
+description = "NLP analysis of Australian workplace gender equality policy submissions."
 authors = [
   { name = "Manh Tuan Nguyen", email = "tuannm3812@gmail.com" },
 ]
@@ -38,8 +38,23 @@ dependencies = [
     "loguru>=0.6",
     "python-dotenv>=0.20",
     "typer>=0.9",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=23.0",
+    "mypy>=1.0",
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
     "ruff>=0.1",
 ]
+
+[project.scripts]
+gender-nlp-data = "gender_equality_nlp.dataset:app"
+gender-nlp-features = "gender_equality_nlp.features:app"
+gender-nlp-train = "gender_equality_nlp.modeling.train:app"
+gender-nlp-predict = "gender_equality_nlp.modeling.predict:app"
+gender-nlp-plots = "gender_equality_nlp.plots:app"
 
 [project.urls]
 Homepage = "https://github.com/tuannm3812/gender-equality-nlp-analysis"
@@ -48,8 +63,8 @@ Repository = "https://github.com/tuannm3812/gender-equality-nlp-analysis"
 
 [tool.ruff]
 line-length = 99
-src = ["src"]
-include = ["pyproject.toml", "src/**/*.py"]
+src = ["gender_equality_nlp", "tests"]
+include = ["pyproject.toml", "gender_equality_nlp/**/*.py", "tests/**/*.py"]
 target-version = "py311"
 
 [tool.ruff.lint]
@@ -58,3 +73,6 @@ extend-select = ["I", "E", "F", "W"]
 [tool.ruff.lint.isort]
 known-first-party = ["gender_equality_nlp"]
 force-sort-within-sections = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

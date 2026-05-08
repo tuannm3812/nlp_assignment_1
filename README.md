@@ -1,203 +1,129 @@
-# Decoding the Debate: NLP Analysis of the Workplace Gender Equality Amendment Bill 2024
+# Gender Equality Policy NLP
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Libraries](https://img.shields.io/badge/Libraries-Gensim%20%7C%20Scikit--Learn%20%7C%20NLTK-green)
-![Status](https://img.shields.io/badge/Status-Complete-success)
+![NLP](https://img.shields.io/badge/NLP-TF--IDF%20%7C%20LDA%20%7C%20Clustering-green)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
 ![Parliamentary Inquiry Process](https://live-production.wcms.abc-cdn.net.au/f975a010ae7dafb11057b1d957733dd5?impolicy=wcms_crop_resize&cropH=2813&cropW=5000&xPos=0&yPos=260&width=862&height=485)
 
-## 📖 Project Overview
+Natural language processing project for analysing Australian parliamentary submissions on the Workplace Gender Equality Amendment (Setting Gender Equality Targets) Bill 2024.
 
-This project applies **Natural Language Processing (NLP)** techniques to deconstruct the parliamentary discourse surrounding the *Workplace Gender Equality Amendment (Setting Gender Equality Targets) Bill 2024*.
+The project turns unstructured policy submissions into structured evidence about stakeholder priorities, vocabulary, and thematic differences. It combines document cleaning, TF-IDF feature extraction, topic modelling, clustering, and exploratory visual analysis to compare how unions, industry groups, government bodies, advocacy organisations, and academics frame workplace gender equality reform.
 
-The analysis processes an unstructured corpus of **31 written submissions** to the Senate Finance and Public Administration Legislation Committee, transforming raw text into structured insights. By combining classical NLP techniques with modern machine learning, this project reveals how different stakeholder groups (unions, industry bodies, government, advocacy groups, and academics) frame the gender equality debate through distinct vocabularies and conceptual frameworks.
+## Key Findings
 
-### Key Insight
-The analysis reveals a **bifurcated discourse** where the success of the Bill depends on bridging the gap between *technical compliance* demands of employers and *safety/outcome* demands of workers.
+- Industry submissions tend to emphasise compliance, review mechanisms, reporting burden, and implementation detail.
+- Union submissions tend to emphasise worker safety, violence prevention, leave entitlements, and measurable outcomes.
+- Advocacy and academic submissions frequently focus on evidence quality, data collection, and policy accountability.
+- The central policy tension is between employer-side implementation risk and worker-side outcome expectations.
 
-## 🔍 Research Questions
+## Repository Layout
 
-1. **Thematic Divergence:** What are the dominant latent topics in the corpus, and how do they vary by stakeholder group?
-2. **Stance & Vocabulary:** How do supportive vs. cautious submissions differ in their lexical choices?
-3. **Policy Granularity:** Does the debate focus on high-level ideology or specific implementation details?
-
-## 🛠️ Technical Approach & Pipeline
-
-The project implements an end-to-end NLP pipeline:
-
-### 1. Data Ingestion & OCR
-- **Hybrid Extraction:** Utilized `pdfplumber` for digital PDFs and `pytesseract` (OCR) for scanned image-based submissions
-- **Metadata Parsing:** Automated extraction of submitter names and classification into stakeholder groups (Union, Industry Body, Government, etc.)
-
-### 2. Preprocessing
-- **Cleaning:** Custom Regex functions to repair PDF artifacts and normalize whitespace
-- **Filtering:** Domain-specific stopword removal to isolate content words
-- **Tokenization:** N-gram generation (Bigrams) to capture semantic units like *"pay gap"* and *"parental leave"*
-
-### 3. Advanced Modeling
-- **Topic Modeling (LDA):** Latent Dirichlet Allocation model uncovering 5 latent themes
-- **Clustering (K-Means):** K-Means clustering on TF-IDF vectors to group documents by semantic similarity
-- **Dimensionality Reduction:** PCA for 2D visualization of document clusters
-
-## 📊 Key Findings
-
-The analysis revealed distinct discourse patterns:
-
-- **The "Two Worlds" Narrative:**
-  - **Industry Bodies (Cautious):** Focus on compliance, review mechanisms, and implementation policy
-  - **Unions (Supportive):** Focus on safety, violence prevention, and leave entitlements
-  - **Advocacy Groups & Academics:** Emphasize evidence-based approaches and robust data collection
-
-- **Conclusion:** Policy success depends on bridging the gap between employers' compliance concerns and workers' safety/outcome demands
-
-## 📂 Repository Structure
-
-```
+```text
 gender-equality-nlp-analysis/
+├── gender_equality_nlp/                         # Reusable Python package
+│   ├── dataset.py                               # Corpus loading and text cleaning
+│   ├── features.py                              # TF-IDF feature generation
+│   ├── plots.py                                 # Plotting helpers and CLI
+│   └── modeling/
+│       ├── train.py                             # K-Means training workflow
+│       └── predict.py                           # Cluster assignment workflow
 ├── notebooks/
-│   └── ANLP_AT1_ManhTuanNguyen_25739083.ipynb    # Main analysis notebook
-├── data/                                          # Data files (in .gitignore)
-│   ├── raw/                                       # Original PDF submissions
-│   ├── processed/                                 # Cleaned text data
-│   └── external/                                  # Reference documents
-├── reports/                                       # Generated visualizations
-├── src/                                           # Source code
-├── tests/                                         # Unit tests
-├── pyproject.toml                                 # Project configuration
-├── requirements.txt                               # Python dependencies
-├── Makefile                                       # Development commands
-├── .gitignore                                     # Git ignore rules
-└── README.md                                      # This file
+│   └── workplace_gender_equality_discourse_analysis.ipynb
+├── reports/
+│   └── workplace_gender_equality_nlp_report.pdf
+├── docs/
+│   └── project-overview.md
+├── tests/
+├── pyproject.toml
+├── requirements.txt
+├── Makefile
+└── README.md
 ```
 
-## 🚀 Quick Start
+Raw and processed data are intentionally excluded from version control. Place source documents under `data/raw/` and generated tables under `data/processed/`.
 
-### Prerequisites
-- Python 3.11+
-- pip or conda
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/tuannm3812/gender-equality-nlp-analysis.git
-   cd gender-equality-nlp-analysis
-   ```
-
-2. **Create a virtual environment**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install dependencies**
-   ```bash
-   make requirements
-   ```
-
-### Running the Analysis
-
-1. **Open Jupyter Notebook**
-   ```bash
-   jupyter notebook notebooks/ANLP_AT1_ManhTuanNguyen_25739083.ipynb
-   ```
-
-2. **Run the pipeline**
-   ```bash
-   make data
-   ```
-
-## 🔧 Development Commands
+## Quick Start
 
 ```bash
-make help           # Show available commands
-make requirements   # Install dependencies
-make clean         # Remove cache and compiled files
-make lint          # Check code style with ruff
-make format        # Format code with ruff
-make test          # Run tests with pytest
+python -m venv .venv
+.venv\Scripts\activate
+python -m pip install -e ".[dev]"
 ```
 
-## 📦 Dependencies
+On macOS or Linux, activate the environment with:
 
-### Core Libraries
-- **pandas** - Data manipulation
-- **numpy** - Numerical computing
-- **scikit-learn** - Machine learning (K-Means, TF-IDF, PCA)
-- **gensim** - Topic modeling (LDA)
-- **nltk** - NLP toolkit
+```bash
+source .venv/bin/activate
+```
 
-### Visualization
-- **matplotlib** - Static plots
-- **seaborn** - Statistical visualizations
-- **wordcloud** - Word frequency visualization
-- **networkx** - Network analysis
+## Pipeline
 
-### Data Processing
-- **pdfplumber** - Digital PDF extraction
-- **pytesseract** - OCR for scanned documents
-- **pdf2image** - PDF to image conversion
-- **Pillow** - Image processing
+Prepare a plain-text corpus:
 
-### Utilities
-- **tqdm** - Progress bars
-- **loguru** - Logging
-- **python-dotenv** - Environment management
-- **typer** - CLI framework
-- **ruff** - Code linter and formatter
+```bash
+python -m gender_equality_nlp.dataset --input-path data/raw/submissions --output-path data/processed/submissions.csv
+```
 
-## 📊 Analysis Overview
+Generate TF-IDF features:
 
-### Dataset
-- **31 written submissions** to the Senate Finance and Public Administration Legislation Committee
-- **Multiple stakeholder groups:** Unions, Industry Bodies, Government agencies, Advocacy groups, Academics
-- **Text preprocessing:** Custom regex, domain-specific stopword removal, bigram tokenization
+```bash
+python -m gender_equality_nlp.features --input-path data/processed/submissions.csv --output-path data/processed/features.csv
+```
 
-### Methods
-- **LDA Topic Modeling:** 5 latent topics identified
-- **K-Means Clustering:** Document semantic grouping
-- **TF-IDF Vectorization:** Feature extraction
-- **PCA:** Dimensionality reduction for visualization
+Train document clusters:
 
-### Outputs
-- Topic distributions by stakeholder
-- Document similarity visualizations
-- Vocabulary comparison by submission stance
-- Policy focus analysis (high-level vs. specific details)
+```bash
+python -m gender_equality_nlp.modeling.train --features-path data/processed/features.csv
+```
 
-## 📝 Citation
+Create a top-term chart:
 
-If you use this project in your research, please cite:
+```bash
+python -m gender_equality_nlp.plots --input-path data/processed/features.csv --output-path reports/figures/top_terms.png
+```
+
+## Development
+
+```bash
+make requirements   # Install package and development tools
+make lint           # Run Ruff checks
+make format         # Format and autofix Python files
+make test           # Run tests with coverage
+make typecheck      # Run mypy
+make clean          # Remove local build and cache files
+```
+
+## Methods
+
+The analysis uses a classical, inspectable NLP workflow:
+
+- PDF/OCR extraction and manual text quality checks for source submissions
+- Regex-based text cleanup for PDF artifacts and OCR spacing issues
+- Domain-aware stopword handling and n-gram generation
+- TF-IDF feature extraction for lexical comparison
+- LDA topic modelling to identify recurring themes
+- K-Means clustering and PCA visualisation for document-level structure
+
+## Outputs
+
+- Cleaned corpus tables
+- Document-term feature matrices
+- Cluster assignments
+- Topic and vocabulary charts
+- A PDF report summarising the policy interpretation
+
+## Citation
 
 ```bibtex
-@project{nguyen2024gender,
-  title={Decoding the Debate: NLP Analysis of the Workplace Gender Equality Amendment Bill 2024},
-  author={Nguyen, Manh Tuan},
-  year={2024},
-  url={https://github.com/tuannm3812/gender-equality-nlp-analysis}
+@software{nguyen2024gender_equality_nlp,
+  title = {Gender Equality Policy NLP},
+  author = {Nguyen, Manh Tuan},
+  year = {2024},
+  url = {https://github.com/tuannm3812/gender-equality-nlp-analysis}
 }
 ```
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 👤 Author
-
-**Manh Tuan Nguyen**
-- GitHub: [@tuannm3812](https://github.com/tuannm3812)
-- Student ID: 25739083
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📞 Support
-
-For issues, questions, or suggestions, please open an [issue](https://github.com/tuannm3812/gender-equality-nlp-analysis/issues) on GitHub.
-
----
-
-**Project Status:** ✅ Complete  
-**Last Updated:** April 2026
+This project is released under the MIT License. See [LICENSE](LICENSE).

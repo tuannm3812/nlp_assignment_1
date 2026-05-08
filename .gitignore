@@ -3,6 +3,7 @@
 *.csv
 *.xlsx
 *.pdf
+!reports/*.pdf
 
 # Mac OS-specific storage files
 .DS_Store
